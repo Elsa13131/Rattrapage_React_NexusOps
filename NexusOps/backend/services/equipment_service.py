@@ -28,3 +28,25 @@ def create_equipment(name: str, status: str):
     equipments.append(new_equipment)
 
     return new_equipment
+
+def update_equipment(equipment_id: int, name: str, status: str):
+    equipment = get_equipment_by_id(equipment_id)
+
+    if equipment is None:
+        return None
+
+    equipment["name"] = name
+    equipment["status"] = status
+
+    return equipment
+
+
+def delete_equipment(equipment_id: int):
+    equipment = get_equipment_by_id(equipment_id)
+
+    if equipment is None:
+        return False
+
+    equipments.remove(equipment)
+
+    return True
