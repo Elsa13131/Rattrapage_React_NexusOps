@@ -7,3 +7,24 @@ equipments = [
 
 def get_all_equipments():
     return equipments
+
+def get_equipment_by_id(equipment_id: int):
+    for equipment in equipments:
+        if equipment["id"] == equipment_id:
+            return equipment
+
+    return None
+
+
+def create_equipment(name: str, status: str):
+    new_id = max(equipment["id"] for equipment in equipments) + 1
+
+    new_equipment = {
+        "id": new_id,
+        "name": name,
+        "status": status
+    }
+
+    equipments.append(new_equipment)
+
+    return new_equipment
