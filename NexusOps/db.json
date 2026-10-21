@@ -36,13 +36,6 @@
       "severity": "medium",
       "status": "in_progress",
       "equipmentId": 1
-    },
-    {
-      "title": "ternfe fe",
-      "severity": "medium",
-      "equipmentId": 3,
-      "status": "open",
-      "id": "OstMoF_f9iE"
     }
   ],
   "users": [
