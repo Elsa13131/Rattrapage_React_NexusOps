@@ -19,3 +19,12 @@ class IncidentDB(Base):
     severity = Column(String, nullable=False)
     status = Column(String, nullable=False)
     equipment_id = Column(Integer, nullable=False)
+
+
+class UserDB(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    role = Column(String, nullable=False)

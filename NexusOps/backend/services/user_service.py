@@ -1,56 +1,49 @@
-users = [
-    {"id": 1, "name": "Elsa", "email": "elsa@example.com", "role": "admin"},
-    {"id": 2, "name": "Thomas", "email": "thomas@example.com", "role": "operator"},
-    {"id": 3, "name": "Julie", "email": "julie@example.com", "role": "viewer"}
-]
+
+from sqlalchemy.orm import Session
+from database_models import UserDB
 
 
-def get_all_users():
-    return users
+def get_all_users(db: Session):
+    return db.query(UserDB).all()
 
 
-def get_user_by_id(user_id: int):
-    for user in users:
-        if user["id"] == user_id:
-            return user
-
-    return None
+def get_user_by_id(db: Session, user_id: int):
+    return db.query(UserDB).filter(UserDB.id == user_id).first()
 
 
-def create_user(name: str, email: str, role: str):
-    new_id = max((user["id"] for user in users), default=0) + 1
+def create_user(db: Session, name: str, email: str, role: str):
+    user = UserDB(name=name, email=email, role=role)
 
-    new_user = {
-        "id": new_id,
-        "name": name,
-        "email": email,
-        "role": role
-    }
-
-    users.append(new_user)
-
-    return new_user
-
-
-def update_user(user_id: int, name: str, email: str, role: str):
-    user = get_user_by_id(user_id)
-
-    if user is None:
-        return None
-
-    user["name"] = name
-    user["email"] = email
-    user["role"] = role
+    db.add(user)
+    db.commit()
+    db.refresh(user)
 
     return user
 
 
-def delete_user(user_id: int):
-    user = get_user_by_id(user_id)
+def update_user(db: Session, user_id: int, name: str, email: str, role: str):
+    user = get_user_by_id(db, user_id)
+
+    if user is None:
+        return None
+
+    user.name = name
+    user.email = email
+    user.role = role
+
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+
+def delete_user(db: Session, user_id: int):
+    user = get_user_by_id(db, user_id)
 
     if user is None:
         return False
 
-    users.remove(user)
+    db.delete(user)
+    db.commit()
 
     return True
