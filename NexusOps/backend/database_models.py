@@ -28,3 +28,4 @@ class UserDB(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     role = Column(String, nullable=False)
+    password_hash = Column(String, nullable=True)

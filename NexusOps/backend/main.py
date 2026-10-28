@@ -5,6 +5,7 @@ from routes.equipment_routes import router as equipment_router
 from routes.incident_routes import router as incident_router
 from routes.user_routes import router as user_router
 from database import Base, engine 
+from routes.auth_routes import router as auth_router
 import database_models
 app = FastAPI(
     title="NexusOps API",
@@ -25,6 +26,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(equipment_router)
 app.include_router(incident_router)
 app.include_router(user_router)
+app.include_router(auth_router)
 
 @app.get("/")
 def accueil():

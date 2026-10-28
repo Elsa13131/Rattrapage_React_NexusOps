@@ -1,7 +1,12 @@
-from pydantic import BaseModel,Field,EmailStr
+
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from typing import Literal
+
+
 class User(BaseModel):
-    id:int
-    name:str = Field(min_length=2,max_length=100)
-    email:EmailStr
-    role:Literal["admin","operator","viewer"]
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str = Field(min_length=2, max_length=100)
+    email: EmailStr
+    role: Literal["admin", "operator", "viewer"]
