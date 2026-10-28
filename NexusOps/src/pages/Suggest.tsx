@@ -5,7 +5,7 @@ import { getEquipments } from "../services/equipmentService";
 
 interface FormData {
   title: string;
-  severity: string;
+  severity: 'low' | 'medium' | 'high' | '';
   equipmentId: string;
 }
 
@@ -98,7 +98,7 @@ export default function Incidents() {
       const equipments = await getEquipments();
 
       const equipmentExists = equipments.some(
-      (equipment) => equipment.id === form.equipmentId
+      (equipment) => equipment.id === Number(form.equipmentId)
       );
 
       if (!equipmentExists) {
@@ -107,9 +107,9 @@ export default function Incidents() {
       }
 
       await createIncident({
-        title: form.title,
-        severity: form.severity,
-        equipmentId: Number(form.equipmentId),
+      title: form.title,
+      severity: form.severity as 'low' | 'medium' | 'high',
+      equipmentId: Number(form.equipmentId),
       });
 
       setSubmitted(true);

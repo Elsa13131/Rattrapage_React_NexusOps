@@ -1,3 +1,4 @@
+
 export interface User {
   id: string;
   name: string;
@@ -6,7 +7,7 @@ export interface User {
 }
 
 export interface Equipment {
-  id: string;
+  id: number;
   name: string;
   type: string;
   site: string;
@@ -14,9 +15,9 @@ export interface Equipment {
 }
 
 export interface Incident {
-    id: string;
-    title: string;
-    severity: 'low' | 'medium' | 'high';
-    status: 'open' | 'in_progress' | 'resolved' | 'closed';
-    equipmentId: number;
+  id: number;
+  title: string;
+  severity: 'low' | 'medium' | 'high';
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  equipmentId: number;
 }

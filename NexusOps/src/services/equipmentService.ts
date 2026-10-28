@@ -1,7 +1,8 @@
+
 import type { Equipment } from "../types";
 
 export async function getEquipments(): Promise<Equipment[]> {
-    const response = await fetch("http://localhost:3001/equipments");
+    const response = await fetch("http://localhost:8000/equipments");
 
     if (!response.ok) {
         throw new Error("Erreur lors de la récupération des équipements");

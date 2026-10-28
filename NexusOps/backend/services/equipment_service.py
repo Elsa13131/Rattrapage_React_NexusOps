@@ -1,30 +1,45 @@
-equipments = [
-    {"id": 1, "name": "Serveur principal", "status": "online"},
-    {"id": 2, "name": "PC accueil", "status": "offline"},
-    {"id": 3, "name": "Switch réseau", "status": "online"}
-]
+
+from sqlalchemy.orm import Session
+from database_models import EquipmentDB
 
 
-def get_all_equipments():
-    return equipments
-
-def get_equipment_by_id(equipment_id: int):
-    for equipment in equipments:
-        if equipment["id"] == equipment_id:
-            return equipment
-
-    return None
+def get_all_equipments(db: Session):
+    return db.query(EquipmentDB).all()
 
 
-def create_equipment(name: str, status: str):
-    new_id = max(equipment["id"] for equipment in equipments) + 1
+def get_equipment_by_id(db: Session, equipment_id: int):
+    return db.query(EquipmentDB).filter(EquipmentDB.id == equipment_id).first()
 
-    new_equipment = {
-        "id": new_id,
-        "name": name,
-        "status": status
-    }
 
-    equipments.append(new_equipment)
+def create_equipment(db: Session, name: str, status: str):
+    equipment = EquipmentDB(name=name, status=status)
+    db.add(equipment)
+    db.commit()
+    db.refresh(equipment)
+    return equipment
 
-    return new_equipment
+
+def update_equipment(db: Session, equipment_id: int, name: str, status: str):
+    equipment = get_equipment_by_id(db, equipment_id)
+
+    if equipment is None:
+        return None
+
+    equipment.name = name
+    equipment.status = status
+    db.commit()
+    db.refresh(equipment)
+
+    return equipment
+
+
+def delete_equipment(db: Session, equipment_id: int):
+    equipment = get_equipment_by_id(db, equipment_id)
+
+    if equipment is None:
+        return False
+
+    db.delete(equipment)
+    db.commit()
+
+    return True
