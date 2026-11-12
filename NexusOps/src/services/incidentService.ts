@@ -3,8 +3,18 @@ import type { Incident } from "../types";
 
 const API_URL = "http://127.0.0.1:8000/incidents";
 
+function getAuthHeaders() {
+    const token = localStorage.getItem("token");
+
+    return {
+        "Authorization": `Bearer ${token}`
+    };
+}
+
 export async function getIncidents(): Promise<Incident[]> {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+        headers: getAuthHeaders()
+    });
 
     if (!response.ok) {
         throw new Error("Erreur lors de la récupération des incidents");
@@ -36,6 +46,7 @@ export async function createIncident(incident: {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            ...getAuthHeaders()
         },
         body: JSON.stringify({
             title: incident.title,

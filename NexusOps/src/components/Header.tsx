@@ -1,9 +1,23 @@
-import { NavLink } from "react-router-dom";
+
+import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
   isActive ? "nav-button active" : "nav-button";
 
 export default function Header() {
+  const navigate = useNavigate();
+
+  const [isConnected, setIsConnected] = useState(
+    !!localStorage.getItem("token")
+  );
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setIsConnected(false);
+    navigate("/login");
+  }
+
   return (
     <header className="site-header">
       <div>
@@ -31,6 +45,16 @@ export default function Header() {
         <NavLink to="/suggest" className={navClass}>
           SUGGESTIONS D'INCIDENTS
         </NavLink>
+
+        {isConnected ? (
+        <button className="nav-button nav-logout" onClick={handleLogout}>
+            DÉCONNEXION
+        </button>
+        ) : (
+          <NavLink to="/login" className={navClass}>
+            CONNEXION
+          </NavLink>
+        )}
       </nav>
     </header>
   );
