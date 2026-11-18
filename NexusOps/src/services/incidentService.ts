@@ -73,3 +73,36 @@ export async function createIncident(incident: {
         equipmentId: data.equipment_id
     } as Incident;
 }
+
+export async function updateIncident(incident: Incident) {
+    const response = await fetch(`${API_URL}/${incident.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            ...getAuthHeaders()
+        },
+        body: JSON.stringify({
+            title: incident.title,
+            severity: incident.severity,
+            status: incident.status,
+            equipment_id: incident.equipmentId
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(
+            error.detail || "Erreur lors de la modification de l'incident"
+        );
+    }
+
+    const data = await response.json();
+
+    return {
+        id: data.id,
+        title: data.title,
+        severity: data.severity,
+        status: data.status,
+        equipmentId: data.equipment_id
+    } as Incident;
+}
